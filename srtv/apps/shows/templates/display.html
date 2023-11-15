@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- later we can display the show title -->
+    <title>Display one</title>
+</head>
+<body>
+    <h1>show one</h1>
+    <a href="/shows/">dashboard</a>
+
+    <p>{{ show.id }}</p>
+    <p>{{ show.title }}</p>
+    <p>{{ show.network }}</p>
+    <p>{{ show.released_on }}</p>
+    <p>{{ show.description }}</p>
+    <p>{{ show.created_at }}</p>
+    <p>{{ show.updated_at }}</p>
+
+    <a href="/shows/{{ show.id }}/edit">Edit Show</a> |
+    <a href="/shows/{{ show.id }}/delete">Delete Show</a> |
+</body>
+</html>

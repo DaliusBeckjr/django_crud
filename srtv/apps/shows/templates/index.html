@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    {% load static %}
+</head>
+<body>
+    <h1>all shows</h1>
+    <a href="/shows/new">add a new show</a>
+
+    {% for show in all_shows %}
+        <p>{{ show.id }}</p>
+        <p>{{ show.title }}</p>
+        <p>{{ show.creator.name }}</p>
+        <p>{{ show.network }}</p>
+        <p>{{ show.released_on }}</p>
+        <p>{{ show.description }}</p>
+        <a href="/shows/{{ show.id }}">Show</a> |
+        <a href="/shows/{{ show.id }}/edit">Edit Show</a> |
+        <a href="/shows/{{ show.id }}/delete">Delete Show</a> |
+    {% endfor %}
+</body>
+</html>

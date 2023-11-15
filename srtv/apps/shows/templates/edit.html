@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit one</title>
+</head>
+<body>
+    <h1>this is the edit page</h1>
+    <a href="/shows/">dashboard</a>
+
+    <form action="/shows/{{ show.id }}/edit" method="post">
+        {% csrf_token %}
+
+        <p>Show title: <input type="text" name="title" value="{{ show.title }}" placeholder="Show Title"></p>
+        <p>Network: <input type="text" name="network" value="{{ show.network }}" placeholder="Network"></p>
+
+        <p>Released Date: <input type="date" name="released_on" value="{{ show.released_on|date:'Y-m-d' }}"></p>
+
+        <p>Description: <textarea name="description" cols="30" rows="10">{{ show.description }}</textarea></p>
+        <button type="submit">update show</button>
+    </form>
+</body>
+</html>
