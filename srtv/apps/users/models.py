@@ -29,8 +29,11 @@ class UserManager(models.Manager):
         elif len(postData["password"]) < 8:
             errors["password"] = "Password needs to be more than 8 characters"
         # confirm password 
-        # if len(postData["confirm_pw"]) < 1:
-        #     errors['confirm_pw'] = "Confimr password field is required"
+        if len(postData["confirm_pw"]) < 1:
+            errors['confirm_pw'] = "Confirm password field is required"
+        # match passwords
+        if postData["password"] != postData["confirm_pw"]:
+            
         return errors
 
 
@@ -42,7 +45,7 @@ class User(models.Model):
     password = models.CharField(max_length = 60)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-
+    
     objects = UserManager()
 
     def __str__(self):
