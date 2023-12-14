@@ -31,11 +31,17 @@ def login(request):
 
     if request.method == "POST":
         # this will search for the user inside the db
-        this_user = User.objects.filter(email=request.POST['email'])
+        # usually we use filter for a queryset but can use it without
+        # added a .first() to retrieve the first user if it exist
+        this_user = User.objects.filter(email=request.POST['email']).first()
         
         # if the user exist
         if this_user:
             logged_user = this_user
+
+            if bcrypt.checkpw(request.POST['password'].encode(), logged_user.password.encode()):
+                request.session['userid'] = logged_user.id
+        
 
             if bcrypt.checkpw(request.POST['password'].encode(), logged_user.password.encode()):
                 request.session['userid'] = logged_user.id
