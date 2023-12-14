@@ -32,8 +32,8 @@ class UserManager(models.Manager):
         if len(postData["confirm_pw"]) < 1:
             errors['confirm_pw'] = "Confirm password field is required"
         # match passwords
-        if postData["password"] != postData["confirm_pw"]:
-            
+        elif postData["password"] != postData["confirm_pw"]:
+            errors["confirm_pw"] = "Passwords have to match"
         return errors
 
 
