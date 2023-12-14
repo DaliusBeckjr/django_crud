@@ -3,7 +3,7 @@ from django.shortcuts import render, HttpResponse
 from .models import User
 
 
-
+import bcrypt
 
 
 def register(request):
