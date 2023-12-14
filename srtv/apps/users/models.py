@@ -23,8 +23,6 @@ class UserManager(models.Manager):
         # email validaation
         if not EMAIL_REGEX.match(postData['email']):
             errors['email'] = "invalid email address"
-            elif postData[email].exist():
-            errors['email'] = "Email already in use"
         # password validation
         if len(postData["password"]) < 1:
             errors['password'] = "Password is required"
