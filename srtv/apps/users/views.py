@@ -43,3 +43,10 @@ def login(request):
 
             if bcrypt.checkpw(request.POST['password'].encode(), logged_user.password.encode()):
                 request.session['userid'] = logged_user.id
+
+
+
+
+
+# to protect routes --> if 'userid' not in request.session: return redirect('/')
+
