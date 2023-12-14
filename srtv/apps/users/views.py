@@ -1,9 +1,11 @@
-from django.shortcuts import render, HttpResponse
+from django.shortcuts import render, HttpResponse, redirect
 
 from .models import User
 
+import bcrypt # import it to the routes
 
-import bcrypt
+def index(request):
+    return HttpResponse("whats good")
 
 
 def register(request):
@@ -11,14 +13,27 @@ def register(request):
         return render(request, "register.html")
 
     if request.method == "POST":
-        password = request.POST['password']
-        pw_hash = bcrypt.hashpw(password.encode(), bcrypt.gensalt()).decode()
+        errors = User.objects.user_validator(request.POST)
+        if len(errors) > 0:
+            for value in errors.values():
+                messages.error(request, value)
+            return redirect('/register')
+        else:
 
-        this_user = User.objects.create(first_name=request.POST['first_name'],
-                                        last_name=request.POST['last_name'],
-                                        email=request.POST['email'],
-                                        password=pw_hash)
-        return redirect('/')
+
+            password = request.POST['password']
+            pw_hash = bcrypt.hashpw(password.encode(), bcrypt.gensalt()).decode()
+
+            this_user = User.objects.create(first_name=request.POST['first_name'],
+                                            last_name=request.POST['last_name'],
+                                            email=request.POST['email'],
+                                            password=pw_hash)
+            print(this_user.id)
+            print(this_user.first_name)
+            print(this_user.last_name)
+            print(this_user.email)
+            print(this_user.password)
+            return redirect('/')
 
 
 
@@ -39,14 +54,8 @@ def login(request):
 
             if bcrypt.checkpw(request.POST['password'].encode(), logged_user.password.encode()):
                 request.session['userid'] = logged_user.id
-        
-
-            if bcrypt.checkpw(request.POST['password'].encode(), logged_user.password.encode()):
-                request.session['userid'] = logged_user.id
-
-
-
-
-
+                print("this is the guy")
+                return redirect('/')
+    print("invalid password")
+    return redirect('/login')
 # to protect routes --> if 'userid' not in request.session: return redirect('/')
-
