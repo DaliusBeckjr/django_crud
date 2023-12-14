@@ -4,8 +4,6 @@ from .models import User
 
 
 
-def index(request):
-    return HttpResponse("this is the equivalent of @app.route('/')!")
 
 
 def register(request):
