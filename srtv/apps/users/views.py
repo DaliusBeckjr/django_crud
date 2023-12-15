@@ -1,12 +1,20 @@
 from django.shortcuts import render, HttpResponse, redirect
 from django.contrib import messages
+from django.contrib.auth import authenticate, login 
 
 from .models import User
 
 import bcrypt # import it to the routes
 
 def index(request):
-    return HttpResponse("whats good")
+    return render(request, "test.html", context)
+
+def display(request, user_id):
+    context = {
+        'user' : User.objects.get(id = user_id)
+    }
+    return render(request, "test.html", context)
+
 
 
 def register(request):
@@ -44,25 +52,24 @@ def login(request):
         return render(request, "login.html")
 
     if request.method == "POST":
-        errors = User.objects.user_validator(request.POST)
-        if len(errors) > 0:
-            for value in errors.values():
-                messages.error(request, value)
-            return redirect('/login')
-        else:
-        # this will search for the user inside the db
-        # usually we use filter for a queryset but can use it without
-        # added a .first() to retrieve the first user if it exist
-            this_user = User.objects.filter(email=request.POST['email']).first()
-            
-            # if the user exist
-            if this_user:
-                logged_user = this_user
+        errors = User.additional_objects.login_validator(request.POST)
+        if len(errors) > 0: 
 
+            for key, value in errors.items():
+                messages.error(request, value)
+                return redirect('/login')
+        else:
+
+        
+            user = User.objects.filter(email=request.POST['email']).first()
+            
+            if user:
+                logged_user = user
+                
                 if bcrypt.checkpw(request.POST['password'].encode(), logged_user.password.encode()):
                     request.session['userid'] = logged_user.id
-                    print("this is the guy")
                     return redirect('/')
-    print("invalid password")
-    return redirect('/login')
 # to protect routes --> if 'userid' not in request.session: return redirect('/')
+
+# if 'email' not in postData['email'] or 'password' not in postData['password']:
+#     messages.errors ="email and password fields are required"
